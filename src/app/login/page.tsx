@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const router = useRouter();
-    const { login } = useAuth(); // استدعاء دالة login من AuthContext
+    const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,15 +24,11 @@ export default function LoginPage() {
         setSuccess('');
 
         try {
-            // ✅ تم التعديل: إرسال طلب حقيقي إلى الخادم
             const res = await API.post('/auth/login', { email, password, role });
 
             if (res.data.success) {
-                // ✅ عند النجاح: قم بتحديث حالة المستخدم باستخدام AuthContext
                 login(res.data.data); 
                 setSuccess('تم تسجيل الدخول بنجاح! جاري التوجيه...');
-                
-                // التوجيه إلى الصفحة المناسبة بعد ثانية واحدة
                 setTimeout(() => {
                     if (res.data.data.role === 'super-admin') {
                         router.push('/admin/dashboard');
@@ -54,7 +50,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-emerald-50 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-emerald-50 p-4" dir="rtl">
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full opacity-20 animate-pulse"></div>
                 <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-100 rounded-full opacity-20 animate-pulse animation-delay-2000"></div>
@@ -93,7 +89,7 @@ export default function LoginPage() {
                                 <input
                                     type="email"
                                     placeholder="أدخل بريدك الإلكتروني"
-                                    className="w-full pr-12 pl-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/70 backdrop-blur-sm hover:bg-white/90"
+                                    className="w-full pr-12 pl-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/70 backdrop-blur-sm hover:bg-white/90 text-black text-right"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -109,7 +105,7 @@ export default function LoginPage() {
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="أدخل كلمة المرور"
-                                    className="w-full pr-12 pl-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/70 backdrop-blur-sm hover:bg-white/90"
+                                    className="w-full pr-12 pl-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/70 backdrop-blur-sm hover:bg-white/90 text-black text-right"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required

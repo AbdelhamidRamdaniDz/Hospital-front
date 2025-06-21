@@ -45,7 +45,7 @@ export default function DepartmentDetailsPage() {
           API.get(`/hospitals/departments/${params.id}`),
           API.get(`/hospitals/doctors`),
         ]);
-        setDepartment(deptRes.data);
+        setDepartment(deptRes.data.data || null);
         setDoctors(docsRes.data.data || []);
       } catch (err) {
         console.error('فشل في الجلب', err);
