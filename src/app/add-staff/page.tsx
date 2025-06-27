@@ -6,7 +6,6 @@ import API from '@/lib/axios';
 import Link from 'next/link';
 import axios from 'axios';
 
-// استيراد الأيقونات
 import {
     UserPlus,
     ArrowLeft,
@@ -24,7 +23,6 @@ import {
     User
 } from 'lucide-react';
 
-// واجهات البيانات
 interface Department {
     _id: string;
     name: string;
@@ -35,7 +33,6 @@ interface Doctor {
     fullName: string;
 }
 
-// المكون الرئيسي للصفحة
 export default function AddStaffPage() {
     const { user } = useAuth();
     const [departments, setDepartments] = useState<Department[]>([]);
@@ -62,7 +59,6 @@ export default function AddStaffPage() {
         { id: 3, title: 'تحديد الدور', icon: Briefcase, description: 'حدد الدور الوظيفي' }
     ];
 
-    // دالة لجلب البيانات الأولية (الأقسام والأطباء)
     useEffect(() => {
         const fetchData = async () => {
             if (!user) {
@@ -86,7 +82,6 @@ export default function AddStaffPage() {
         fetchData();
     }, [user]);
 
-    // دالة لإرسال النموذج
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedDept || !selectedDoctor) {
@@ -100,13 +95,12 @@ export default function AddStaffPage() {
         const body = {
             doctorId: selectedDoctor,
             roleInDepartment: selectedRole,
-            onDuty: true // القيمة الافتراضية عند الإضافة
+            onDuty: true
         };
 
         try {
             await API.post(`/hospitals/departments/${selectedDept}/staff`, body);
             setSuccess(`تمت إضافة الطبيب بنجاح إلى القسم المحدد.`);
-            // إعادة تعيين الحقول
             setSelectedDoctor('');
             setSelectedRole('مناوب');
             setCurrentStep(1);
@@ -159,7 +153,6 @@ export default function AddStaffPage() {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50" dir="rtl">
             <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
                 
-                {/* رأس الصفحة */}
                 <div className="flex justify-between items-center mb-8">
                     <div className="flex items-center gap-4">
                         <div className="bg-white p-4 rounded-2xl shadow-lg border border-blue-100">
@@ -179,7 +172,6 @@ export default function AddStaffPage() {
                     </Link>
                 </div>
 
-                {/* شريط التقدم */}
                 <div className="mb-8">
                     <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
                         <div className="flex items-center justify-between">
@@ -230,7 +222,6 @@ export default function AddStaffPage() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* النموذج الرئيسي */}
                     <div className="lg:col-span-2">
                         <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
                             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
@@ -247,7 +238,6 @@ export default function AddStaffPage() {
 
                             <form onSubmit={handleSubmit} className="p-6 space-y-6">
                                 
-                                {/* الخطوة 1: اختيار القسم */}
                                 {currentStep === 1 && (
                                     <div className="space-y-4">
                                         <label className="flex items-center gap-3 text-xl font-bold text-gray-700 mb-6">
@@ -298,7 +288,6 @@ export default function AddStaffPage() {
                                     </div>
                                 )}
 
-                                {/* الخطوة 2: اختيار الطبيب */}
                                 {currentStep === 2 && (
                                     <div className="space-y-4">
                                         <label className="flex items-center gap-3 text-xl font-bold text-gray-700 mb-6">
@@ -349,7 +338,6 @@ export default function AddStaffPage() {
                                     </div>
                                 )}
 
-                                {/* الخطوة 3: تحديد الدور */}
                                 {currentStep === 3 && (
                                     <div className="space-y-4">
                                         <label className="flex items-center gap-3 text-xl font-bold text-gray-700 mb-6">
@@ -394,7 +382,6 @@ export default function AddStaffPage() {
                                     </div>
                                 )}
 
-                                {/* رسائل الخطأ والنجاح */}
                                 {error && (
                                     <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-center gap-3 border border-red-200 animate-pulse">
                                         <AlertCircle className="w-6 h-6 flex-shrink-0" />
@@ -408,7 +395,6 @@ export default function AddStaffPage() {
                                     </div>
                                 )}
 
-                                {/* أزرار التنقل */}
                                 <div className="flex justify-between pt-6 border-t border-gray-100">
                                     {currentStep > 1 && (
                                         <button
@@ -464,7 +450,6 @@ export default function AddStaffPage() {
                             </h3>
                             
                             <div className="space-y-4">
-                                {/* القسم المحدد */}
                                 <div className={`p-4 rounded-xl border-2 transition-all ${
                                     selectedDept ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'
                                 }`}>
@@ -477,7 +462,6 @@ export default function AddStaffPage() {
                                     </p>
                                 </div>
 
-                                {/* الطبيب المحدد */}
                                 <div className={`p-4 rounded-xl border-2 transition-all ${
                                     selectedDoctor ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
                                 }`}>
@@ -490,7 +474,6 @@ export default function AddStaffPage() {
                                     </p>
                                 </div>
 
-                                {/* الدور المحدد */}
                                 <div className="p-4 rounded-xl border-2 bg-purple-50 border-purple-200">
                                     <div className="flex items-center gap-3 mb-2">
                                         <Briefcase className="w-5 h-5 text-purple-500" />
@@ -500,7 +483,6 @@ export default function AddStaffPage() {
                                 </div>
                             </div>
 
-                            {/* إحصائيات سريعة */}
                             <div className="mt-6 pt-6 border-t border-gray-100">
                                 <div className="grid grid-cols-2 gap-4 text-center">
                                     <div className="p-3 bg-blue-50 rounded-lg">

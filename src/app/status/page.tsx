@@ -5,7 +5,6 @@ import API from '@/lib/axios';
 import Link from 'next/link';
 import axios from 'axios';
 
-// استيراد الأيقونات
 import { 
     ArrowLeft,
     Loader2,
@@ -20,26 +19,22 @@ import {
     Save
 } from 'lucide-react';
 
-// واجهات البيانات المحسنة
 interface BedStatus {
     total: number;
     occupied: number;
 }
 
-// واجهة بيانات حالة المستشفى
 interface HospitalStatus {
     isERAvailable: boolean;
     availableBeds: Record<string, BedStatus>;
 }
 
-// واجهة بيانات القسم
 interface Department {
     _id: string;
     name: string;
     beds: BedStatus;
 }
 
-// المكون الرئيسي للصفحة
 export default function UpdateStatusPage() {
     const { user } = useAuth();
     const [status, setStatus] = useState<HospitalStatus>({
@@ -52,7 +47,6 @@ export default function UpdateStatusPage() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
-    // دالة لجلب الحالة الحالية والأقسام
     useEffect(() => {
         const fetchInitialData = async () => {
             if (!user) {
@@ -94,7 +88,6 @@ export default function UpdateStatusPage() {
         fetchInitialData();
     }, [user]);
 
-    // دالة لتحديث حقول النموذج
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         
@@ -118,7 +111,6 @@ export default function UpdateStatusPage() {
         }
     };
 
-    // دالة لإضافة وحدة جديدة
     const handleAddUnit = () => {
         if (newUnitName.trim() && !status.availableBeds[newUnitName.trim()]) {
             setStatus(prev => ({
@@ -132,7 +124,6 @@ export default function UpdateStatusPage() {
         }
     };
     
-    // دالة لحذف وحدة
     const handleRemoveUnit = (unitName: string) => {
         if (window.confirm(`هل أنت متأكد من رغبتك في حذف وحدة "${unitName}"؟`)) {
             setStatus(prev => {
@@ -143,7 +134,6 @@ export default function UpdateStatusPage() {
         }
     };
 
-    // دالة لإرسال التحديثات
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
@@ -183,8 +173,6 @@ export default function UpdateStatusPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50" dir="rtl">
             <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8 max-w-6xl">
-                
-                {/* رأس الصفحة */}
                 <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div className="flex items-center gap-4">
@@ -209,8 +197,6 @@ export default function UpdateStatusPage() {
                         </Link>
                     </div>
                 </div>
-                
-                {/* شريط الإشعارات */}
                 {success && (
                     <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-green-800 p-4 rounded-xl shadow-sm animate-pulse">
                         <div className="flex items-center gap-3">
@@ -221,7 +207,6 @@ export default function UpdateStatusPage() {
                         </div>
                     </div>
                 )}
-                
                 {error && (
                     <div className="mb-6 bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 text-red-800 p-4 rounded-xl shadow-sm">
                         <div className="flex items-center gap-3">
@@ -232,12 +217,8 @@ export default function UpdateStatusPage() {
                         </div>
                     </div>
                 )}
-
-                {/* النموذج الرئيسي */}
                 <div className="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
                     <form onSubmit={handleSubmit} className="divide-y divide-gray-100">
-                        
-                        {/* قسم الطوارئ */}
                         <div className="p-6 sm:p-8">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="bg-red-100 p-2 rounded-lg">
@@ -245,7 +226,6 @@ export default function UpdateStatusPage() {
                                 </div>
                                 <h2 className="text-xl font-bold text-gray-800">حالة قسم الطوارئ</h2>
                             </div>
-                            
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <RadioCard 
                                     name="isERAvailable" 
@@ -271,8 +251,6 @@ export default function UpdateStatusPage() {
                                 />
                             </div>
                         </div>
-
-                        {/* قسم الوحدات والأسرة */}
                         <div className="p-6 sm:p-8">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="bg-blue-100 p-2 rounded-lg">
@@ -280,7 +258,6 @@ export default function UpdateStatusPage() {
                                 </div>
                                 <h2 className="text-xl font-bold text-gray-800">إدارة الوحدات والأسرة</h2>
                             </div>
-                            
                             {Object.keys(status.availableBeds).length > 0 ? (
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     {Object.entries(status.availableBeds).map(([unitName, unitStatus]) => (
@@ -305,8 +282,6 @@ export default function UpdateStatusPage() {
                                     </div>
                                 </div>
                             )}
-
-                            {/* إضافة وحدة جديدة */}
                             <div className="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-200">
                                 <label className="block text-lg font-semibold text-gray-700 mb-4">
                                     إضافة وحدة أو قسم جديد
@@ -332,8 +307,6 @@ export default function UpdateStatusPage() {
                                 </div>
                             </div>
                         </div>
-                        
-                        {/* زر الحفظ */}
                         <div className="p-6 sm:p-8 bg-gray-50">
                             <button 
                                 type="submit"
@@ -360,7 +333,6 @@ export default function UpdateStatusPage() {
     );
 }
 
-// مكون بطاقة الاختيار المحسن
 function RadioCard({ name, id, value, checked, onChange, label, description, icon, variant }: any) {
     const baseClasses = "flex-1 p-4 sm:p-6 border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md";
     const variantClasses = {
@@ -388,14 +360,12 @@ function RadioCard({ name, id, value, checked, onChange, label, description, ico
     );
 }
 
-// مكون مجموعة إدخال الأسرة المحسن
 function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedValue, onChange, onRemove }: any) {
     const available = totalValue - occupiedValue;
     const occupancyRate = totalValue > 0 ? (occupiedValue / totalValue) * 100 : 0;
     
     return (
         <div className="relative bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 group">
-            {/* زر الحذف */}
             <button 
                 type="button" 
                 onClick={onRemove} 
@@ -404,8 +374,6 @@ function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedVal
             >
                 <X className="w-4 h-4"/>
             </button>
-            
-            {/* عنوان الوحدة */}
             <div className="mb-4">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">{label}</h3>
                 <div className="flex items-center gap-4 text-sm">
@@ -413,8 +381,6 @@ function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedVal
                     <span className="text-gray-500">معدل الإشغال: {occupancyRate.toFixed(0)}%</span>
                 </div>
             </div>
-            
-            {/* شريط التقدم */}
             <div className="mb-4">
                 <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div 
@@ -426,8 +392,6 @@ function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedVal
                     ></div>
                 </div>
             </div>
-            
-            {/* حقول الإدخال */}
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label htmlFor={totalName} className="block text-sm font-medium text-gray-700 mb-2">

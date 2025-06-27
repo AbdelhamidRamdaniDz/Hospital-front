@@ -57,61 +57,52 @@ export default function DepartmentDetailsPage() {
     fetchAll();
   }, [params.id]);
 
-  // ✅ الخطوة 2: أضف هذه الدوال الجديدة
-
-// دالة لحذف موظف من القسم
-const handleDeleteStaff = async (staffId: string) => {
-    // رسالة تأكيد قبل الحذف
+  const handleDeleteStaff = async (staffId: string) => {
     if (!window.confirm('هل أنت متأكد من رغبتك في حذف هذا الطبيب من القسم؟')) {
         return;
     }
     try {
         await API.delete(`/hospitals/departments/${params.id}/staff/${staffId}`);
         alert('تم حذف الطبيب من القسم بنجاح.');
-        window.location.reload(); // أسهل طريقة لتحديث الواجهة
+        window.location.reload();
     } catch (err) {
         console.error('فشل في الحذف', err);
         alert('حدث خطأ أثناء الحذف.');
     }
-};
+  };
 
-// دالة لتفعيل وضع التعديل
-const handleEditClick = (staffMember: StaffMember) => {
-    setEditingStaffId(staffMember._id); // لاحظ أننا نحتاج إلى _id للموظف
+  const handleEditClick = (staffMember: StaffMember) => {
+    setEditingStaffId(staffMember._id);
     setEditFormData({
         roleInDepartment: staffMember.roleInDepartment,
         onDuty: staffMember.onDuty,
     });
-};
+  };
 
-// دالة لإلغاء وضع التعديل
-const handleCancelClick = () => {
+  const handleCancelClick = () => {
     setEditingStaffId(null);
-};
+  };
 
-// دالة لتحديث بيانات النموذج أثناء التعديل
-const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-    
     setEditFormData(prev => ({
         ...prev,
         [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
     }));
-};
+  };
 
-// دالة لحفظ التعديلات
-const handleUpdateSubmit = async (staffId: string) => {
+  const handleUpdateSubmit = async (staffId: string) => {
     try {
         await API.put(`/hospitals/departments/${params.id}/staff/${staffId}`, editFormData);
         alert('تم تحديث البيانات بنجاح.');
-        setEditingStaffId(null); // اخرج من وضع التعديل
-        window.location.reload(); // تحديث الواجهة
+        setEditingStaffId(null);
+        window.location.reload();
     } catch (err) {
         console.error('فشل في التحديث', err);
         alert('حدث خطأ أثناء تحديث البيانات.');
     }
-};
+  };
 
   if (!user) {
     return (
@@ -155,7 +146,6 @@ const handleUpdateSubmit = async (staffId: string) => {
   return (
     <div className="min-h-screen bg-white" dir="rtl">
       <div className="max-w-6xl mx-auto p-6">
-        {/* Header Section */}
         <div className="bg-gray-50 rounded-2xl shadow-lg p-6 mb-8 border border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-6">
@@ -185,7 +175,6 @@ const handleUpdateSubmit = async (staffId: string) => {
           </div>
         </div>
 
-        {/* Staff Section */}
         <div className="bg-gray-50 rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-8">
           <div className="bg-gradient-to-l from-blue-600 to-indigo-600 p-6">
             <div className="flex items-center gap-3">
@@ -200,100 +189,98 @@ const handleUpdateSubmit = async (staffId: string) => {
             {department.staff.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full" dir="rtl">
-                      <thead>
-                      <tr className="border-b border-gray-200">
-                          <th className="text-right py-4 px-4 font-semibold text-black">الاسم</th>
-                          <th className="text-right py-4 px-4 font-semibold text-black">الهاتف</th>
-                          <th className="text-right py-4 px-4 font-semibold text-black">البريد الإلكتروني</th>
-                          <th className="text-right py-4 px-4 font-semibold text-black">الدور</th>
-                          <th className="text-right py-4 px-4 font-semibold text-black">الحالة</th>
-                          <th className="text-center py-4 px-4 font-semibold text-black">الإجراءات</th>
-                      </tr>
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-right py-4 px-4 font-semibold text-black">الاسم</th>
+                      <th className="text-right py-4 px-4 font-semibold text-black">الهاتف</th>
+                      <th className="text-right py-4 px-4 font-semibold text-black">البريد الإلكتروني</th>
+                      <th className="text-right py-4 px-4 font-semibold text-black">الدور</th>
+                      <th className="text-right py-4 px-4 font-semibold text-black">الحالة</th>
+                      <th className="text-center py-4 px-4 font-semibold text-black">الإجراءات</th>
+                    </tr>
                   </thead>
-                <tbody>
+                  <tbody>
                     {department.staff.map((m) => (
-                        <tr key={m._id} className="hover:bg-gray-100 transition-colors duration-200 border-b border-gray-100 last:border-b-0">
-                            {editingStaffId === m._id ? (
-                                <>
-                                    {/* === وضع التعديل === */}
-                                    <td className="py-4 px-4" colSpan={3}>
-                                        <div className="font-medium text-black">{m.doctor.fullName}</div>
-                                        <div className="text-sm text-gray-500">(لا يمكن تعديل بيانات الطبيب الأساسية هنا)</div>
-                                    </td>
-                                    <td className="py-4 px-4">
-                                        <select 
-                                            name="roleInDepartment" 
-                                            value={editFormData.roleInDepartment}
-                                            onChange={handleEditFormChange}
-                                            className="w-full p-2 border border-gray-300 rounded-md bg-white text-black"
-                                        >
-                                            {staffRoles.map(role => (
-                                                <option key={role} value={role}>{role}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="py-4 px-4">
-                                        <input 
-                                            type="checkbox" 
-                                            name="onDuty"
-                                            checked={editFormData.onDuty}
-                                            onChange={handleEditFormChange}
-                                            className="w-5 h-5"
-                                        />
-                                    </td>
-                                    <td className="py-4 px-4 text-center">
-                                        <div className="flex justify-center items-center gap-2">
-                                            <button onClick={() => handleUpdateSubmit(m._id)} className="text-green-600 hover:text-green-800"><i className="fas fa-check"></i> حفظ</button>
-                                            <button onClick={handleCancelClick} className="text-gray-600 hover:text-gray-800"><i className="fas fa-times"></i> إلغاء</button>
-                                        </div>
-                                    </td>
-                                </>
-                            ) : (
-                                <>
-                                    {/* === وضع العرض العادي === */}
-                                    <td className="py-4 px-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                                {m.doctor.fullName.charAt(0)}
-                                            </div>
-                                            <span className="font-medium text-black">{m.doctor.fullName}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-4 px-4 text-black">{m.doctor.phone}</td>
-                                    <td className="py-4 px-4 text-black">{m.doctor.email}</td>
-                                    <td className="py-4 px-4">
-                                        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                                            {m.roleInDepartment}
-                                        </span>
-                                    </td>
-                                    <td className="py-4 px-4">
-                                        {m.onDuty ? (
-                                            <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                                مناوب
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
-                                                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                                غير مناوب
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="py-4 px-4 text-center">
-                                        <div className="flex justify-center items-center gap-4">
-                                            <button onClick={() => handleEditClick(m)} className="text-blue-600 hover:text-blue-800" title="تعديل">
-                                                <i className="fas fa-pencil-alt"></i> تعديل  {/* <-- أضفنا كلمة "تعديل" */}
-                                            </button>
-                                            <button onClick={() => handleDeleteStaff(m._id)} className="text-red-600 hover:text-red-800" title="حذف">
-                                                <i className="fas fa-trash-alt"></i> حذف   {/* <-- أضفنا كلمة "حذف" */}
-                                            </button>
-                                        </div>
-                                    </td>
-                                </>
-                            )}
-                        </tr>
+                      <tr key={m._id} className="hover:bg-gray-100 transition-colors duration-200 border-b border-gray-100 last:border-b-0">
+                        {editingStaffId === m._id ? (
+                          <>
+                            <td className="py-4 px-4" colSpan={3}>
+                              <div className="font-medium text-black">{m.doctor.fullName}</div>
+                              <div className="text-sm text-gray-500">(لا يمكن تعديل بيانات الطبيب الأساسية هنا)</div>
+                            </td>
+                            <td className="py-4 px-4">
+                              <select 
+                                name="roleInDepartment" 
+                                value={editFormData.roleInDepartment}
+                                onChange={handleEditFormChange}
+                                className="w-full p-2 border border-gray-300 rounded-md bg-white text-black"
+                              >
+                                {staffRoles.map(role => (
+                                  <option key={role} value={role}>{role}</option>
+                                ))}
+                              </select>
+                            </td>
+                            <td className="py-4 px-4">
+                              <input 
+                                type="checkbox" 
+                                name="onDuty"
+                                checked={editFormData.onDuty}
+                                onChange={handleEditFormChange}
+                                className="w-5 h-5"
+                              />
+                            </td>
+                            <td className="py-4 px-4 text-center">
+                              <div className="flex justify-center items-center gap-2">
+                                <button onClick={() => handleUpdateSubmit(m._id)} className="text-green-600 hover:text-green-800"><i className="fas fa-check"></i> حفظ</button>
+                                <button onClick={handleCancelClick} className="text-gray-600 hover:text-gray-800"><i className="fas fa-times"></i> إلغاء</button>
+                              </div>
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="py-4 px-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                  {m.doctor.fullName.charAt(0)}
+                                </div>
+                                <span className="font-medium text-black">{m.doctor.fullName}</span>
+                              </div>
+                            </td>
+                            <td className="py-4 px-4 text-black">{m.doctor.phone}</td>
+                            <td className="py-4 px-4 text-black">{m.doctor.email}</td>
+                            <td className="py-4 px-4">
+                              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                {m.roleInDepartment}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              {m.onDuty ? (
+                                <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                  مناوب
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                                  <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                  غير مناوب
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-4 px-4 text-center">
+                              <div className="flex justify-center items-center gap-4">
+                                <button onClick={() => handleEditClick(m)} className="text-blue-600 hover:text-blue-800" title="تعديل">
+                                  <i className="fas fa-pencil-alt"></i> تعديل
+                                </button>
+                                <button onClick={() => handleDeleteStaff(m._id)} className="text-red-600 hover:text-red-800" title="حذف">
+                                  <i className="fas fa-trash-alt"></i> حذف
+                                </button>
+                              </div>
+                            </td>
+                          </>
+                        )}
+                      </tr>
                     ))}
-                </tbody>
+                  </tbody>
                 </table>
               </div>
             ) : (
@@ -308,7 +295,6 @@ const handleUpdateSubmit = async (staffId: string) => {
           </div>
         </div>
 
-        {/* Add Doctor Section */}
         <div className="bg-gray-50 rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div className="bg-gradient-to-l from-green-600 to-emerald-600 p-6">
             <div className="flex items-center gap-3">
@@ -326,14 +312,14 @@ const handleUpdateSubmit = async (staffId: string) => {
                 const formData = new FormData(e.currentTarget);
                 const body = {
                   doctorId: formData.get('doctorId'),
-                  roleInDepartment: formData.get('roleInDepartment'), // القيمة ستأتي الآن من القائمة المنسدلة وستكون صحيحة دائمًا
+                  roleInDepartment: formData.get('roleInDepartment'),
                   onDuty: formData.get('onDuty') === 'on',
                 };
                 console.log('البيانات التي سيتم إرسالها:', body);
                 try {
                   await API.post(`/hospitals/departments/${params.id}/staff`, body);
                   alert('تمت الإضافة بنجاح');
-                  window.location.reload(); // إعادة تحميل الصفحة لإظهار الطبيب الجديد
+                  window.location.reload();
                 } catch (err) {
                   console.error('فشل في الإضافة', err);
                   alert('فشل في الإضافة. تأكد من أن الطبيب غير مضاف مسبقًا.');
@@ -361,20 +347,20 @@ const handleUpdateSubmit = async (staffId: string) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-black mb-2">
-                        <i className="fas fa-briefcase mr-2 text-gray-500"></i>
-                        الدور في القسم
-                    </label>
-                    <select 
-                        name="roleInDepartment" 
-                        className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-white text-black"
-                        required
-                    >
-                        <option value="">-- اختر الدور --</option>
-                        {staffRoles.map(role => (
-                            <option key={role} value={role}>{role}</option>
-                        ))}
-                    </select>
+                  <label className="block text-sm font-semibold text-black mb-2">
+                    <i className="fas fa-briefcase mr-2 text-gray-500"></i>
+                    الدور في القسم
+                  </label>
+                  <select 
+                    name="roleInDepartment" 
+                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-white text-black"
+                    required
+                  >
+                    <option value="">-- اختر الدور --</option>
+                    {staffRoles.map(role => (
+                      <option key={role} value={role}>{role}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="space-y-2">

@@ -6,9 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 interface Hospital {
   _id: string;
   name: string;
-  // يمكنك إضافة خصائص أخرى لاحقًا مثل `location` أو `address` إن وُجدت
 }
-
 
 export default function NewCasePage() {
   const { user } = useAuth();
@@ -76,7 +74,7 @@ export default function NewCasePage() {
           <option value="">اختر مستشفى</option>
           {hospitals.map((h) => (
             <option key={h._id} value={h._id}>{h.name}</option>
-            ))}
+          ))}
         </select>
 
         <button

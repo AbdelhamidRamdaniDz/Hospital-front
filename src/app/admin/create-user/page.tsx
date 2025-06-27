@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
-// استيراد الأيقونات
 import { 
     UserPlus, 
     ArrowLeft, 
@@ -23,7 +22,6 @@ import {
     PlusCircle
 } from 'lucide-react';
 
-// هذا المكون يحتوي على المنطق الرئيسي ويستخدم useSearchParams
 function CreateUserForm() {
     const { user } = useAuth();
     const router = useRouter();
@@ -46,7 +44,6 @@ function CreateUserForm() {
     const [success, setSuccess] = useState<string | null>(null);
 
     useEffect(() => {
-        // تحديث الدور في النموذج عند تغيير الرابط
         setFormData(prev => ({ ...prev, role: role }));
     }, [role]);
 
@@ -92,7 +89,6 @@ function CreateUserForm() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50" dir="rtl">
             <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-                {/* Header المحسن */}
                 <header className="mb-8">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <div className="flex items-center gap-4">
@@ -115,7 +111,6 @@ function CreateUserForm() {
                         </Link>
                     </div>
 
-                    {/* شريط التقدم */}
                     <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-200">
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2">
@@ -135,11 +130,9 @@ function CreateUserForm() {
                     </div>
                 </header>
 
-                {/* النموذج المحسن */}
                 <div className="bg-white shadow-2xl rounded-3xl border border-gray-100 overflow-hidden">
                     <div className="p-8">
                         <form onSubmit={handleSubmit} className="space-y-8">
-                            {/* رسائل النجاح والخطأ */}
                             {success && (
                                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 text-green-800 p-4 rounded-2xl flex items-center gap-3 border border-green-200 shadow-sm">
                                     <CheckCircle className="w-6 h-6 text-green-600" />
@@ -153,7 +146,6 @@ function CreateUserForm() {
                                 </div>
                             )}
 
-                            {/* قسم المعلومات الأساسية */}
                             <div className="space-y-6">
                                 <div className="border-b border-gray-200 pb-4">
                                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -200,7 +192,6 @@ function CreateUserForm() {
                                 </div>
                             </div>
 
-                            {/* قسم معلومات المستشفى */}
                             {role === 'hospital' && (
                                 <div className="space-y-6">
                                     <div className="border-b border-gray-200 pb-4">
@@ -248,7 +239,6 @@ function CreateUserForm() {
                                 </div>
                             )}
 
-                            {/* قسم معلومات المسعف */}
                             {role === 'paramedic' && (
                                 <div className="space-y-6">
                                     <div className="border-b border-gray-200 pb-4">
@@ -281,7 +271,6 @@ function CreateUserForm() {
                                 </div>
                             )}
                             
-                            {/* زر الإرسال */}
                             <div className="border-t border-gray-200 pt-6">
                                 <button 
                                     type="submit"
@@ -306,7 +295,6 @@ function CreateUserForm() {
     );
 }
 
-// مكون حقل الإدخال المحسن
 function InputField({ icon, label, ...props }: any) {
     return (
         <div className="space-y-2">
@@ -324,7 +312,6 @@ function InputField({ icon, label, ...props }: any) {
     );
 }
 
-// هذا هو المكون الذي يتم تصديره كافتراضي ويحتوي على Suspense
 export default function CreateUserPage() {
     return (
         <Suspense fallback={

@@ -44,7 +44,6 @@ export default function EditDepartmentPage() {
         staff: [],
     });
 
-
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -84,11 +83,10 @@ useEffect(() => {
     if (!form) return;
     setSaving(true);
     try {
-      // CORRECT: This path correctly resolves to /api/hospitals/departments/:id
       await API.put(`/hospitals/departments/${form._id}`, {
         name: form.name,
         icon: form.icon,
-        color: form.color, // Make sure 'color' is in your Mongoose schema to save it
+        color: form.color,
         isAvailable: form.isAvailable,
       });
       alert('تم حفظ التعديلات بنجاح');
@@ -129,7 +127,6 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8" dir="rtl">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.push('/dashboard')}
@@ -151,7 +148,6 @@ useEffect(() => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Form Section */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
@@ -162,7 +158,6 @@ useEffect(() => {
               </div>
               
               <div className="p-6 space-y-6">
-                {/* Department Name */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-black font-semibold">
                     <Hospital className="w-4 h-4 text-blue-600" />
@@ -178,7 +173,6 @@ useEffect(() => {
                   />
                 </div>
 
-                {/* FontAwesome Icon */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-black font-semibold">
                     <i className="fas fa-icons text-blue-600"></i>
@@ -197,7 +191,6 @@ useEffect(() => {
                   </p>
                 </div>
 
-                {/* Color Picker */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-black font-semibold">
                     <Palette className="w-4 h-4 text-blue-600" />
@@ -224,7 +217,6 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* Availability Toggle */}
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
                   <div className="flex items-center gap-3">
                     {form.isAvailable ? (
@@ -253,7 +245,6 @@ useEffect(() => {
                   </label>
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={saving}
@@ -273,7 +264,6 @@ useEffect(() => {
             </form>
           </div>
 
-          {/* Preview Section */}
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
               <h3 className="text-lg font-bold text-black mb-4 flex items-center gap-2">
@@ -282,7 +272,6 @@ useEffect(() => {
               </h3>
               
               <div className="space-y-4">
-                {/* Department Card Preview */}
                 <div 
                   className="p-4 rounded-xl border-2 transition-all duration-200"
                   style={{ 
@@ -316,7 +305,6 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* Color Info */}
                 <div className="space-y-2">
                   <p className="text-sm text-gray-600">اللون المحدد:</p>
                   <div className="flex items-center gap-2">
@@ -330,7 +318,6 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Tips */}
             <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
               <h3 className="text-lg font-bold text-black mb-3">نصائح مفيدة</h3>
               <ul className="space-y-2 text-sm text-gray-700">

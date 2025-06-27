@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import API from '@/lib/axios';
 import axios from 'axios';
 
-// استيراد الأيقونات
 import { 
     ShieldCheck,
     Hospital,
@@ -21,17 +20,12 @@ import {
     Loader2,
     Search,
     CheckCircle,
-    Filter,
-    MoreVertical,
-    Eye,
-    Activity,
     TrendingUp,
     X,
     AlertTriangle,
     Info
 } from 'lucide-react';
 
-// واجهات البيانات
 interface Hospital {
     _id: string;
     name: string;
@@ -56,7 +50,6 @@ interface Notification {
     isVisible: boolean;
 }
 
-// المكون الرئيسي للصفحة
 export default function AdminDashboardPage() {
     const { user, logout, loading: authLoading } = useAuth();
     const router = useRouter();
@@ -66,7 +59,6 @@ export default function AdminDashboardPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
-    // إضافة إشعار جديد
     const addNotification = (type: 'success' | 'error' | 'warning' | 'info', title: string, message: string) => {
         const newNotification: Notification = {
             id: Date.now().toString(),
@@ -79,13 +71,11 @@ export default function AdminDashboardPage() {
         
         setNotifications(prev => [newNotification, ...prev]);
         
-        // إخفاء الإشعار تلقائياً بعد 5 ثوان
         setTimeout(() => {
             removeNotification(newNotification.id);
         }, 5000);
     };
 
-    // إزالة إشعار
     const removeNotification = (id: string) => {
         setNotifications(prev => prev.filter(notification => notification.id !== id));
     };
@@ -126,7 +116,6 @@ export default function AdminDashboardPage() {
             await API.delete(`/admin/users/${id}`, { data: { role } });
             addNotification('success', 'تم الحذف بنجاح', `تم حذف ${role === 'hospital' ? 'المستشفى' : 'المسعف'} من النظام بنجاح.`);
             
-            // تحديث القائمة فورًا بدون إعادة تحميل
             if (role === 'hospital') {
                 setHospitals(prev => prev.filter(h => h._id !== id));
             } else {
@@ -180,7 +169,6 @@ export default function AdminDashboardPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100" dir="rtl">
-            {/* نظام الإشعارات المحسن */}
             <NotificationContainer notifications={notifications} onRemove={removeNotification} />
             
             <div className="container mx-auto p-6 max-w-7xl">
@@ -277,7 +265,6 @@ export default function AdminDashboardPage() {
     );
 }
 
-// مكون الإشعارات المحسن
 function NotificationContainer({ notifications, onRemove }: { notifications: Notification[], onRemove: (id: string) => void }) {
     return (
         <div className="fixed top-6 left-6 z-50 space-y-4 max-w-md">
@@ -352,20 +339,16 @@ function NotificationCard({ notification, onRemove }: { notification: Notificati
                 min-w-96 max-w-md
             `}
         >
-            {/* شريط ملون في الأعلى */}
             <div className={`absolute top-0 left-0 right-0 h-1 ${styles.accent}`}></div>
             
-            {/* خلفية متحركة */}
             <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/10 animate-pulse"></div>
             
             <div className="relative p-5">
                 <div className="flex items-start gap-4">
-                    {/* الأيقونة */}
                     <div className={`flex-shrink-0 p-2 ${styles.iconBg} rounded-xl shadow-md transform transition-transform duration-300 hover:scale-110`}>
                         {styles.icon}
                     </div>
                     
-                    {/* المحتوى */}
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-2">
                             <h4 className="text-lg font-bold text-gray-800 truncate">
@@ -383,7 +366,6 @@ function NotificationCard({ notification, onRemove }: { notification: Notificati
                             {notification.message}
                         </p>
                         
-                        {/* الوقت */}
                         <div className="text-xs text-gray-400 font-medium">
                             {notification.timestamp.toLocaleTimeString('ar-EG', { 
                                 hour: '2-digit', 
@@ -395,7 +377,6 @@ function NotificationCard({ notification, onRemove }: { notification: Notificati
                 </div>
             </div>
             
-            {/* شريط التقدم */}
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/30">
                 <div 
                     className={`h-full ${styles.accent} transition-all duration-5000 ease-linear`}
@@ -409,7 +390,6 @@ function NotificationCard({ notification, onRemove }: { notification: Notificati
     );
 }
 
-// المكونات المساعدة (بدون تغيير)
 function ActionCard({ href, icon, title, description, color }: { href: string; icon: React.ReactNode; title: string; description: string; color: string; }) {
     const colors: Record<string, string> = {
         blue: 'from-blue-50 via-blue-100 to-blue-200 text-blue-700 hover:border-blue-400 shadow-blue-200/50',
@@ -526,7 +506,6 @@ function StatsCard({ icon, title, value, color, trend }: { icon: React.ReactNode
     );
 }
 
-// إضافة الـ CSS للأنيميشن
 const styles = `
 @keyframes progress {
     from { width: 100%; }
@@ -534,7 +513,6 @@ const styles = `
 }
 `;
 
-// إضافة الستايل إلى الصفحة
 if (typeof document !== 'undefined') {
     const styleSheet = document.createElement('style');
     styleSheet.textContent = styles;

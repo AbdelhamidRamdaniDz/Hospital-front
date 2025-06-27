@@ -12,7 +12,6 @@ interface Department {
   staff: StaffMember[];
 }
 
-
 interface Doctor {
   fullName: string;
 }
@@ -42,13 +41,12 @@ export default function ManageDepartmentsPage() {
     fetchDepartments();
   }, []);
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setForm({ ...form, [e.target.name]: e.target.value });
-};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!form.name || !form.icon) return;
     setLoading(true);
     try {

@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await API.get('/auth/me'); // 🟢 هذا المسار يجب أن يرجع بيانات المستخدم
-        setUser(res.data.user); // يجب أن تكون `user` موجودة في `res.data.user`
+        const res = await API.get('/auth/me');
+        setUser(res.data.user);
       } catch (err) {
         console.warn('فشل في استرداد المستخدم:', err);
         setUser(null);

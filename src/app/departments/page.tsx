@@ -5,7 +5,6 @@ import API from '@/lib/axios';
 import Link from 'next/link';
 import axios from 'axios';
 
-// استيراد الأيقونات
 import { 
     LayoutList, 
     ArrowLeft, 
@@ -27,7 +26,6 @@ import {
     Users,
 } from 'lucide-react';
 
-// واجهات البيانات
 interface Department {
     _id: string;
     name: string;
@@ -41,7 +39,6 @@ interface Department {
     }
 }
 
-// دالة لجلب مكون الأيقونة بناءً على الاسم
 const getIconComponent = (iconName: string) => {
     const icons: Record<string, React.ComponentType<any>> = {
       zap: Zap,
@@ -53,10 +50,9 @@ const getIconComponent = (iconName: string) => {
       stethoscope: Stethoscope,
       building: Building
     };
-    return icons[iconName] || Building; // أيقونة افتراضية
+    return icons[iconName] || Building;
 };
 
-// المكون الرئيسي للصفحة
 export default function ManageDepartmentsPage() {
     const { user } = useAuth();
     const [departments, setDepartments] = useState<Department[]>([]);
@@ -72,7 +68,6 @@ export default function ManageDepartmentsPage() {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // دالة لجلب الأقسام من الخادم
     const fetchDepartments = async () => {
         try {
             const res = await API.get('/hospitals/departments');
@@ -93,7 +88,6 @@ export default function ManageDepartmentsPage() {
         }
     }, [user]);
 
-    // دالة لتحديث حقول النموذج
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
         
@@ -116,7 +110,6 @@ export default function ManageDepartmentsPage() {
         }
     };
 
-    // دالة لإرسال النموذج وإنشاء قسم جديد
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
@@ -151,8 +144,6 @@ export default function ManageDepartmentsPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50" dir="rtl">
             <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8 max-w-7xl">
-                
-                {/* رأس الصفحة */}
                 <div className="mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                         <div className="flex items-center gap-4">
@@ -173,8 +164,6 @@ export default function ManageDepartmentsPage() {
                         </Link>
                     </div>
                 </div>
-
-                {/* نموذج إضافة قسم جديد */}
                 <div className="bg-white shadow-xl rounded-2xl border border-gray-100 mb-8 overflow-hidden">
                     <div className="bg-gradient-to-l from-green-500 to-emerald-600 px-6 py-4">
                         <h2 className="text-xl font-bold text-white flex items-center gap-3">
@@ -182,11 +171,9 @@ export default function ManageDepartmentsPage() {
                             إضافة قسم جديد
                         </h2>
                     </div>
-                    
                     <div className="p-6">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {/* اسم القسم */}
                                 <div className="sm:col-span-2 lg:col-span-2">
                                     <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                                         اسم القسم <span className="text-red-500">*</span>
@@ -201,8 +188,6 @@ export default function ManageDepartmentsPage() {
                                         required 
                                     />
                                 </div>
-                                
-                                {/* الأيقونة */}
                                 <div>
                                     <label htmlFor="icon" className="block text-sm font-semibold text-gray-700 mb-2">الأيقونة</label>
                                     <select 
@@ -223,8 +208,6 @@ export default function ManageDepartmentsPage() {
                                     </select>
                                 </div>
                             </div>
-
-                            {/* الوصف */}
                             <div>
                                 <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">وصف القسم</label>
                                 <textarea 
@@ -237,9 +220,7 @@ export default function ManageDepartmentsPage() {
                                     placeholder="اكتب وصفاً موجزاً عن القسم وخدماته..."
                                 ></textarea>
                             </div>
-
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                {/* إجمالي الأسرة */}
                                 <div>
                                     <label htmlFor="total" className="block text-sm font-semibold text-gray-700 mb-2">
                                         <BedDouble className="w-4 h-4 inline ml-1" />
@@ -255,8 +236,6 @@ export default function ManageDepartmentsPage() {
                                         className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-center text-black" 
                                     />
                                 </div>
-                                
-                                {/* الأسرة المشغولة */}
                                 <div>
                                     <label htmlFor="occupied" className="block text-sm font-semibold text-gray-700 mb-2">
                                         <Users className="w-4 h-4 inline ml-1" />
@@ -273,8 +252,6 @@ export default function ManageDepartmentsPage() {
                                         className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-center text-black" 
                                     />
                                 </div>
-                                
-                                {/* اللون المميز */}
                                 <div>
                                     <label htmlFor="color" className="block text-sm font-semibold text-gray-700 mb-2">
                                         <Palette className="w-4 h-4 inline ml-1" />
@@ -292,8 +269,6 @@ export default function ManageDepartmentsPage() {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* حالة التوفر */}
                             <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                                 <label className="flex items-center justify-between cursor-pointer">
                                     <div className="flex items-center gap-3">
@@ -321,14 +296,12 @@ export default function ManageDepartmentsPage() {
                                     </div>
                                 </label>
                             </div>
-
                             {error && (
                                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
                                     <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
                                     <span className="text-red-700 font-medium">{error}</span>
                                 </div>
                             )}
-
                             <div className="flex justify-end pt-4 border-t border-gray-200">
                                 <button 
                                     disabled={submitting} 
@@ -346,8 +319,6 @@ export default function ManageDepartmentsPage() {
                         </form>
                     </div>
                 </div>
-
-                {/* عرض الأقسام الحالية */}
                 <div>
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
@@ -358,7 +329,6 @@ export default function ManageDepartmentsPage() {
                             {departments.length} قسم
                         </div>
                     </div>
-                    
                     {departments.length === 0 && !loading ? (
                         <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-gray-100">
                             <ServerCrash className="w-20 h-20 mx-auto text-gray-300 mb-6"/>
@@ -380,7 +350,6 @@ export default function ManageDepartmentsPage() {
                                 
                                 return (
                                     <div key={dept._id} className="bg-white shadow-lg rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl hover:scale-105 border border-gray-100">
-                                        {/* رأس البطاقة */}
                                         <div 
                                             className="p-6 text-white relative overflow-hidden"
                                             style={{ 
@@ -391,7 +360,6 @@ export default function ManageDepartmentsPage() {
                                                 <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white"></div>
                                                 <div className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full bg-white"></div>
                                             </div>
-                                            
                                             <div className="relative z-10">
                                                 <div className="flex items-center justify-between mb-4">
                                                     <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
@@ -405,7 +373,6 @@ export default function ManageDepartmentsPage() {
                                                         {dept.isAvailable ? 'متاح' : 'غير متاح'}
                                                     </span>
                                                 </div>
-                                                
                                                 <h3 className="font-bold text-lg mb-2 leading-tight">{dept.name}</h3>
                                                 <div className="flex items-center gap-4 text-sm opacity-90">
                                                     <div className="flex items-center gap-1">
@@ -419,10 +386,7 @@ export default function ManageDepartmentsPage() {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {/* محتوى البطاقة */}
                                         <div className="p-6">
-                                            {/* معدل الإشغال */}
                                             <div className="mb-4">
                                                 <div className="flex items-center justify-between mb-2">
                                                     <span className="text-sm font-semibold text-gray-700">معدل إشغال الأسرة</span>
@@ -442,8 +406,6 @@ export default function ManageDepartmentsPage() {
                                                     <span>{(dept.beds?.total || 0) - (dept.beds?.occupied || 0)} متاحة</span>
                                                 </div>
                                             </div>
-
-                                            {/* زر التفاصيل */}
                                             <Link 
                                                 href={`/departments/${dept._id}`} 
                                                 className="w-full flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl transition-all duration-200 border border-gray-200 hover:border-gray-300"

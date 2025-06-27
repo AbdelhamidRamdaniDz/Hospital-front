@@ -6,7 +6,6 @@ import API from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
 import L from 'leaflet';
 
-// التحميل الديناميكي لتفادي SSR
 const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
 const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
@@ -44,7 +43,7 @@ export default function HospitalCasesMapPage() {
     fetchCases();
   }, []);
 
-  const center = cases.length > 0 ? [cases[0].location.lat, cases[0].location.lng] : [34.85, 2.88]; // مركز الخريطة
+  const center = cases.length > 0 ? [cases[0].location.lat, cases[0].location.lng] : [34.85, 2.88];
 
   if (!user) return <div className="text-center mt-10">يرجى تسجيل الدخول</div>;
 
@@ -63,7 +62,7 @@ export default function HospitalCasesMapPage() {
             key={c._id}
             position={[c.location.lat, c.location.lng]}
             icon={L.icon({
-              iconUrl: '/marker-icon.png', // استخدم أيقونة مخصصة إذا أحببت
+              iconUrl: '/marker-icon.png',
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34],

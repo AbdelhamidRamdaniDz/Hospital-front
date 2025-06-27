@@ -19,7 +19,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-green-50 text-gray-800 px-6 py-12">
       <div className="text-center space-y-6 max-w-xl">
-        <Image src="/logo.png" alt="شعار النظام" width={100} height={100} className="mx-auto" />
+        <Image src="/logo.lnk" alt="شعار النظام" width={100} height={100} className="mx-auto" />
 
         <h1 className="text-3xl font-bold text-blue-800">مرحبًا بك في نظام إدارة الطوارئ الصحية</h1>
         <p className="text-lg text-gray-600">
