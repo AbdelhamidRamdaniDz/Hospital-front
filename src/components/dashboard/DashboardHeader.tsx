@@ -78,9 +78,10 @@ export default function DashboardHeader({
                            {isNotificationOpen && <NotificationDropdown notifications={notifications} onClose={() => setNotificationOpen(false)} />}
                         </div>
                         
-                        <button className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                        {/* ✅ تم التعديل هنا: تحويل الزر إلى رابط */}
+                        <Link href="/settings" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
                             <Settings className="w-5 h-5 text-black" />
-                        </button>
+                        </Link>
                         
                         <div className="w-px h-8 bg-gray-200"></div>
                         
