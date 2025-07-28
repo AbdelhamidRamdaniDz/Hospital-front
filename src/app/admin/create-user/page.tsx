@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, InputHTMLAttributes, ReactNode } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import API from '@/lib/axios';
 import Link from 'next/link';
@@ -21,7 +21,11 @@ import {
     Shield,
     PlusCircle
 } from 'lucide-react';
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  icon?: ReactNode;
+  label: string;
 
+}
 function CreateUserForm() {
     const { user } = useAuth();
     const router = useRouter();
@@ -295,7 +299,7 @@ function CreateUserForm() {
     );
 }
 
-function InputField({ icon, label, ...props }: any) {
+function InputField({ icon, label, ...props }: InputFieldProps) {
     return (
         <div className="space-y-2">
             <label htmlFor={props.name} className="flex items-center gap-2 text-sm font-bold text-gray-800 mb-1">

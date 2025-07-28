@@ -9,9 +9,16 @@ interface PatientNotification {
     lastName: string;
     createdAt: string;
 }
-
+interface User {
+    _id: string;
+    email: string;
+    role: 'hospital' | 'paramedic' | 'super-admin';
+    displayName: string;
+    name?: string; // for hospital
+    fullName?: string; // for paramedic
+}
 interface DashboardHeaderProps {
-    user: any;
+    user: User;
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
     logout: () => void;

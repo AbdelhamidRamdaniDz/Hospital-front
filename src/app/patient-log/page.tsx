@@ -4,7 +4,6 @@ import { useAuth } from '@/hooks/useAuth';
 import API from '@/lib/axios';
 import Link from 'next/link';
 
-// استيراد الأيقونات
 import { 
     ClipboardList,
     ArrowLeft,
@@ -22,7 +21,8 @@ import {
     XCircle,
     UserCheck,
     Calendar,
-    Activity
+    Activity,
+    LucideIcon
 } from 'lucide-react';
 
 // واجهات البيانات
@@ -38,11 +38,10 @@ interface Patient {
     };
 }
 
-// مكون إحصائيات سريعة
 const StatsCard = ({ title, value, icon: Icon, color, bgColor }: {
     title: string;
     value: number;
-    icon: any;
+    icon: LucideIcon;
     color: string;
     bgColor: string;
 }) => (

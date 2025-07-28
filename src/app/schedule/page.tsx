@@ -1,6 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import React, { useEffect, useState } from 'react';import { useAuth } from '@/hooks/useAuth';
 import API from '@/lib/axios';
 import Link from 'next/link';
 
@@ -20,9 +19,9 @@ import {
     Bone,
     Baby,
     Zap,
-    Building
+    Building,
+    LucideIcon
 } from 'lucide-react';
-
 interface Doctor {
     fullName: string;
 }
@@ -43,8 +42,8 @@ interface Department {
     activeStaffCount: number;
 }
 
-const getIconComponent = (iconName: string) => {
-    const icons: Record<string, React.ComponentType<any>> = {
+const getIconComponent = (iconName: string): LucideIcon => {
+     const icons: Record<string, LucideIcon> = {
       zap: Zap,
       heart: Heart,
       baby: Baby,

@@ -19,6 +19,26 @@ import {
     Save
 } from 'lucide-react';
 
+interface BedInputGroupProps {
+    label: string;
+    totalName: string;
+    occupiedName: string;
+    totalValue: number; // بما أنها أعداد
+    occupiedValue: number; // بما أنها أعداد
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // تستقبل حدث input
+    onRemove: () => void; // دالة لا تستقبل معاملات ولا ترجع قيمة
+}
+interface RadioCardProps {
+    name: string;
+    id: string;
+    value: string;
+    checked: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // دالة onChange تستقبل حدث input
+    label: string;
+    description: string;
+    icon: React.ReactNode; // الأيقونة يمكن أن تكون أي ReactNode
+    variant: 'success' | 'danger'; // نوع محدد لـ variant
+}
 interface BedStatus {
     total: number;
     occupied: number;
@@ -333,7 +353,7 @@ export default function UpdateStatusPage() {
     );
 }
 
-function RadioCard({ name, id, value, checked, onChange, label, description, icon, variant }: any) {
+function RadioCard({ name, id, value, checked, onChange, label, description, icon, variant }: RadioCardProps) {
     const baseClasses = "flex-1 p-4 sm:p-6 border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md";
     const variantClasses = {
         success: checked 
@@ -360,7 +380,7 @@ function RadioCard({ name, id, value, checked, onChange, label, description, ico
     );
 }
 
-function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedValue, onChange, onRemove }: any) {
+function BedInputGroup({ label, totalName, occupiedName, totalValue, occupiedValue, onChange, onRemove }: BedInputGroupProps) {
     const available = totalValue - occupiedValue;
     const occupancyRate = totalValue > 0 ? (occupiedValue / totalValue) * 100 : 0;
     

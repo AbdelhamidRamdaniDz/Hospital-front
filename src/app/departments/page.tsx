@@ -24,7 +24,13 @@ import {
     BedDouble,
     Power,
     Users,
+    LucideIcon
 } from 'lucide-react';
+
+interface StaffMember {
+    _id: string;
+    name: string; 
+}
 
 interface Department {
     _id: string;
@@ -32,26 +38,27 @@ interface Department {
     icon: string;
     color: string;
     isAvailable: boolean;
-    staff: any[];
+    staff: StaffMember[];
     beds: {
         total: number;
         occupied: number;
-    }
+    };
 }
 
-const getIconComponent = (iconName: string) => {
-    const icons: Record<string, React.ComponentType<any>> = {
-      zap: Zap,
-      heart: Heart,
-      baby: Baby,
-      bone: Bone,
-      eye: Eye,
-      brain: Brain,
-      stethoscope: Stethoscope,
-      building: Building
+const getIconComponent = (iconName: string): LucideIcon => {
+    const icons: Record<string, LucideIcon> = {
+        zap: Zap,
+        heart: Heart,
+        baby: Baby,
+        bone: Bone,
+        eye: Eye,
+        brain: Brain,
+        stethoscope: Stethoscope,
+        building: Building
     };
     return icons[iconName] || Building;
 };
+
 
 export default function ManageDepartmentsPage() {
     const { user } = useAuth();
