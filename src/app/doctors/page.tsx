@@ -40,7 +40,7 @@ export default function ManageDoctorsPage() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [showForm, setShowForm] = useState(false);
-    const [showMobileMenu, setShowMobileMenu] = useState(false);
+    // const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     const fetchDoctors = async () => {
         try {

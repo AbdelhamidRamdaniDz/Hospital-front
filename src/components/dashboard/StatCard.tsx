@@ -1,3 +1,4 @@
+// src/components/dashboard/StatCard.tsx
 'use client';
 
 interface StatCardProps {

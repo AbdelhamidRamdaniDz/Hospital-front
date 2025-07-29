@@ -2,7 +2,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import API from '@/lib/axios';
 import axios from 'axios';
 
@@ -20,12 +20,30 @@ import {
     Loader2,
     Search,
     CheckCircle,
-    TrendingUp,
+    // TrendingUp,
     X,
     AlertTriangle,
     Info
 } from 'lucide-react';
 
+// interface StatsCardProps {
+//   icon: React.ReactNode;
+//   title: string;
+//   value: number | string;
+//   color: string;
+//   trend: string;
+// }
+interface HospitalsTableProps {
+    hospitals: Hospital[];
+    onEdit: (id: string, role: 'hospital' | 'paramedic') => void;
+    onDelete: (id: string, role: 'hospital' | 'paramedic') => Promise<void>;
+}
+
+interface ParamedicsTableProps {
+    paramedics: Paramedic[];
+    onEdit: (id: string, role: 'hospital' | 'paramedic') => void;
+    onDelete: (id: string, role: 'hospital' | 'paramedic') => Promise<void>; 
+}
 interface Hospital {
     _id: string;
     name: string;
@@ -51,7 +69,7 @@ interface Notification {
 }
 
 export default function AdminDashboardPage() {
-    const { user, logout, loading: authLoading } = useAuth();
+    const { user, logout, isLoading: authLoading } = useAuth();
     const router = useRouter();
     const [hospitals, setHospitals] = useState<Hospital[]>([]);
     const [paramedics, setParamedics] = useState<Paramedic[]>([]);
@@ -59,7 +77,11 @@ export default function AdminDashboardPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
-    const addNotification = (type: 'success' | 'error' | 'warning' | 'info', title: string, message: string) => {
+    const removeNotification = useCallback((id: string) => {
+        setNotifications(prev => prev.filter(notification => notification.id !== id));
+    }, [setNotifications]);
+
+    const addNotification = useCallback((type: 'success' | 'error' | 'warning' | 'info', title: string, message: string) => {
         const newNotification: Notification = {
             id: Date.now().toString(),
             type,
@@ -68,19 +90,15 @@ export default function AdminDashboardPage() {
             timestamp: new Date(),
             isVisible: true
         };
-        
+
         setNotifications(prev => [newNotification, ...prev]);
-        
+
         setTimeout(() => {
             removeNotification(newNotification.id);
         }, 5000);
-    };
+    }, [removeNotification, setNotifications]);
 
-    const removeNotification = (id: string) => {
-        setNotifications(prev => prev.filter(notification => notification.id !== id));
-    };
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoadingData(true);
         try {
             const res = await API.get('/admin/users');
@@ -93,7 +111,7 @@ export default function AdminDashboardPage() {
         } finally {
             setLoadingData(false);
         }
-    };
+    }, [addNotification]);
 
     useEffect(() => {
         if (!authLoading) {
@@ -103,7 +121,7 @@ export default function AdminDashboardPage() {
                 fetchData();
             }
         }
-    }, [user, authLoading, router]);
+    }, [user, authLoading, router, fetchData]);
     
     const handleEditUser = (id: string, role: 'hospital' | 'paramedic') => {
         addNotification('info', 'ميزة قيد التطوير', `سيتم توجيهك لصفحة تعديل ${role === 'hospital' ? 'المستشفى' : 'المسعف'} قريباً.`);
@@ -424,7 +442,7 @@ function SearchBar({ searchTerm, setSearchTerm }: { searchTerm: string; setSearc
     );
 }
 
-function HospitalsTable({ hospitals, onEdit, onDelete }: { hospitals: Hospital[], onEdit: Function, onDelete: Function }) {
+function HospitalsTable({ hospitals, onEdit, onDelete }: HospitalsTableProps) {
     return (
         <div className="overflow-x-auto">
             <table className="w-full">
@@ -456,7 +474,7 @@ function HospitalsTable({ hospitals, onEdit, onDelete }: { hospitals: Hospital[]
     );
 }
 
-function ParamedicsTable({ paramedics, onEdit, onDelete }: { paramedics: Paramedic[], onEdit: Function, onDelete: Function }) {
+function ParamedicsTable({ paramedics, onEdit, onDelete }: ParamedicsTableProps) {
     return (
         <div className="overflow-x-auto">
             <table className="w-full">
@@ -488,23 +506,23 @@ function ParamedicsTable({ paramedics, onEdit, onDelete }: { paramedics: Paramed
     );
 }
 
-function StatsCard({ icon, title, value, color, trend }: { icon: React.ReactNode; title: string; value: number | string; color: string; trend: string; }) {
-    const colors: Record<string, string> = {
-        blue: 'from-blue-500 to-indigo-600 bg-blue-50 text-blue-600',
-        green: 'from-green-500 to-emerald-600 bg-green-50 text-green-600',
-        purple: 'from-purple-500 to-violet-600 bg-purple-50 text-purple-600'
-    };
-    return (
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-            <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 ${colors[color].split(' ')[2]} ${colors[color].split(' ')[3]} rounded-2xl`}>{icon}</div>
-                <div className="flex items-center gap-1 text-green-600 text-sm font-semibold"><TrendingUp className="w-4 h-4" />{trend}</div>
-            </div>
-            <h3 className="text-gray-600 text-sm font-medium mb-1">{title}</h3>
-            <p className="text-3xl font-bold text-gray-800">{value}</p>
-        </div>
-    );
-}
+// function StatsCard({ icon, title, value, color, trend }: StatsCardProps) {
+//     const colors: Record<string, string> = {
+//         blue: 'from-blue-500 to-indigo-600 bg-blue-50 text-blue-600',
+//         green: 'from-green-500 to-emerald-600 bg-green-50 text-green-600',
+//         purple: 'from-purple-500 to-violet-600 bg-purple-50 text-purple-600'
+//     };
+//     return (
+//         <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+//             <div className="flex items-center justify-between mb-4">
+//                 <div className={`p-3 ${colors[color].split(' ')[2]} ${colors[color].split(' ')[3]} rounded-2xl`}>{icon}</div>
+//                 <div className="flex items-center gap-1 text-green-600 text-sm font-semibold"><TrendingUp className="w-4 h-4" />{trend}</div>
+//             </div>
+//             <h3 className="text-gray-600 text-sm font-medium mb-1">{title}</h3>
+//             <p className="text-3xl font-bold text-gray-800">{value}</p>
+//         </div>
+//     );
+// }
 
 const styles = `
 @keyframes progress {
