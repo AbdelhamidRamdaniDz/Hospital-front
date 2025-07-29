@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
 
   // تعريف متغيرات البيئة التي ستكون متاحة في كود الواجهة الأمامية
   env: {
-    NEXT_PUBLIC_API_URL: 'https://api.biocarealgeria.com/api', // *** هذا هو السطر الذي أضفته ***
+    NEXT_PUBLIC_API_URL: 'https://biocarealgeria.com/api', // *** هذا هو السطر الذي أضفته ***
   },
 
   // إذا كنت تستخدم App Router (في Next.js 13+):
