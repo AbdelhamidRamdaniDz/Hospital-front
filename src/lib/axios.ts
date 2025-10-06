@@ -1,24 +1,32 @@
-// import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
-// const API = axios.create({
-//   baseURL: 'http://localhost:5000/api',
-//   withCredentials: true,
-// });
+const FALLBACK_API_URL = 'https://server-ambulance.onrender.com/api';
 
-// export default API;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL1 || FALLBACK_API_URL;
 
-import axios from 'axios';
+console.log('API Base URL is (Resolved):', API_BASE_URL);
 
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_BASE_URL) {
-  console.error("API_BASE_URL is not defined! Please check your next.config.js or .env.local");
-}
-
-const API = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true,
 });
 
-export default API;
+api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError) => {
+        const requestUrl = `${error.config?.baseURL ?? ''}${error.config?.url ?? ''}`;
+
+        console.error(
+            `API Request Failed at URL: ${requestUrl}`,
+            `Status: ${error.response?.status || 'Network Error'}`,
+            `Message: ${error.message}`,
+            error
+        );
+        return Promise.reject(error);
+    }
+);
+
+export default api;
