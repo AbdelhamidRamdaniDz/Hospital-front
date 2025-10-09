@@ -19,7 +19,6 @@ import {
   Stethoscope
 } from 'lucide-react';
 
-// مكون بطاقة الميزة
 function FeatureCard({ icon, title, description }: {
   icon: React.ReactNode;
   title: string;
@@ -36,7 +35,6 @@ function FeatureCard({ icon, title, description }: {
   );
 }
 
-// مكون خطوة العمل
 function WorkStep({ number, icon, title, description }: {
   number: string;
   icon: React.ReactNode;
@@ -75,16 +73,16 @@ export default function Home() {
       {/* Header */}
       <header className="fixed top-0 w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3 space-x-reverse">
+          <div className="flex items-center space-x-3 space-x-reverse gap-1">
             <Image 
-              src="/logo.png" 
-              alt="شعار Ambo" 
-              width={40} 
-              height={40} 
+              src="/URGO-white.jpeg" 
+              alt="شعار URGO" 
+              width={60} 
+              height={60} 
               className="rounded-lg"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              Ambo
+              URGO
             </span>
           </div>
           <Link 
@@ -128,7 +126,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
-              لماذا Ambo هو الحل الأمثل؟
+              لماذا URGO هو الحل الأمثل؟
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               نظام متطور يجمع بين التقنية الحديثة والخبرة الطبية لتوفير أفضل خدمة للطوارئ
@@ -221,7 +219,7 @@ export default function Home() {
                 جاهز لتحسين خدمات الطوارئ؟
               </h3>
               <p className="text-gray-600 mb-6">
-                انضم إلى آلاف المستخدمين الذين يثقون في نظام Ambo لإدارة الطوارئ الطبية
+                انضم إلى آلاف المستخدمين الذين يثقون في نظام URGO لإدارة الطوارئ الطبية
               </p>
               <Link 
                 href="/login"
@@ -239,19 +237,19 @@ export default function Home() {
       <footer className="bg-gray-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-3 space-x-reverse mb-4 md:mb-0">
+            <div className="flex items-center space-x-3 space-x-reverse gap-1 mb-4 md:mb-0">
               <Image 
-                src="/logo.png" 
-                alt="شعار Ambo" 
+                src="/URGO-white.jpeg" 
+                alt="شعار URGO" 
                 width={32} 
                 height={32} 
                 className="rounded"
               />
-              <span className="text-xl font-bold">Ambo</span>
+              <span className="text-xl font-bold">URGO</span>
             </div>
             <div className="text-center md:text-right">
               <p className="text-gray-300">
-                © {new Date().getFullYear()} نظام Ambo - إدارة الطوارئ الطبية. جميع الحقوق محفوظة.
+                © {new Date().getFullYear()} نظام URGO - إدارة الطوارئ الطبية. جميع الحقوق محفوظة.
               </p>
               <p className="text-gray-400 text-sm mt-1">
                 تحويل الاستجابة للطوارئ إلى نظام رقمي ذكي وفوري
